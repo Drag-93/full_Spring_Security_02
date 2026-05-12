@@ -1,5 +1,5 @@
 server:
-  port: 8096
+  port: 8090
 
 spring:
   # mysql
@@ -23,8 +23,13 @@ spring:
     suffix: .html
     cache: false
 
+  #google,kakao,naver login
+  profiles:
+   include:oauth2  #application-oauth2.yml
+
 #로그 설정
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+

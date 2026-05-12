@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 목록</title>
+    <link rel="stylesheet" th:href="@{/css/board/boardList.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="boardList">
+    <div class="boardList-con">
+
+        <div class="top">
+            <h1 class="title">게시글 목록(file)</h1>
+            <div class="search">
+                <form th:action="@{/board/boardList}" method="get">
+                    <select name="subject">
+                        <option value="" th:selected="${param.subject == null or param.subject[0] == ''}">::선택::</option>
+                        <option value="title" th:selected="${param.subject != null and param.subject[0] == 'title'}">제목</option>
+                        <option value="content" th:selected="${param.subject != null and param.subject[0] == 'content'}">내용</option>
+                        <option value="nickName" th:selected="${param.subject != null and param.subject[0] == 'nickName'}">닉네임</option>
+                    </select>
+                    <input type="text" name="search" th:value="${param.search}">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>비밀번호</th>
+                    <th>닉네임</th>
+                    <th>조회수</th>
+                    <th>회원ID</th>
+                    <th>작성일</th>
+                    <th>수정일</th>
+                    <th>파일</th>
+                    <th>보기</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="board : ${boardList}">
+                    <td th:text="${board.id}"></td>
+                    <td>
+                        <a th:href="@{/board/detail/{id}(id=${board.id})}" th:text="${board.title}"></a>
+                    </td>
+                    <td th:text="${board.content}"></td>
+                    <td th:text="${board.boardPw}" class="userPw"></td>
+                    <td th:text="${board.nickName}"></td>
+                    <td th:text="${board.hit}"></td>
+                    <td th:text="${board.memberId}"></td>
+                    <td th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td th:text="${#temporals.format(board.updateTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <th:block th:if="${board.attachFile==1}">
+                        <td>O</td>
+                    </th:block>
+                    <th:block th:unless="${board.attachFile==1}">
+                        <td>X</td>
+                    </th:block>
+                    <td class="th-last">
+                        <a th:href="@{/board/detail/{id}(id=${board.id})}" class="btn-detail">상세보기</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="paging">
+            <ul>                <!-- 검색결과가 없을 때 -->
+                <th:block th:if="${boardList.totalElements == 0}">
+                    <li style="color:#f00 !important;font-size: 16px;margin: 0 auto">검색 결과가 없습니다.</li>
+                </th:block>
+                <!-- 검색결과가 있을 때 -->
+                <th:block th:unless="${boardList.totalElements == 0}">
+                    <li>
+                        <span th:if="${newPage == 0}" class="span0">START</span>
+                        <span th:unless="${newPage == 0}">
+                        <a th:href="@{/board/boardList(page=0, subject=${param.subject}, search=${param.search})}" class="span1">처음</a>
+                    </span>
+                    </li>
+                    <li>
+                        <span th:if="${newPage == 0}" class="span0">PRE</span>
+                        <span th:unless="${newPage == 0}">
+                        <a th:href="@{/board/boardList(page=${newPage-1}, subject=${param.subject}, search=${param.search})}" class="span1">이전</a>
+                    </span>
+                    </li>
+                    <li th:if="${boardList.totalPages > 0}"
+                        th:each="i : ${#numbers.sequence(startPage, endPage)}" class="block">
+                        <span th:if="${i == newPage + 1}" th:text="${i}" class="now"></span>
+                        <a th:unless="${i == newPage + 1}"
+                           th:href="@{/board/boardList(page=${i - 1}, subject=${param.subject}, search=${param.search})}"
+                           th:text="${i}"></a>
+                    </li>
+                    <li>
+                        <span th:if="${newPage + 1 == boardList.totalPages}" class="span0">NEXT</span>
+                        <span th:unless="${newPage + 1 == boardList.totalPages}">
+                        <a th:href="@{/board/boardList(page=${newPage+1}, subject=${param.subject}, search=${param.search})}" class="span1">다음</a>
+                    </span>
+                    </li>
+                    <li>
+                        <span th:if="${newPage + 1 == boardList.totalPages}" class="span0">END</span>
+                        <span th:unless="${newPage + 1 == boardList.totalPages}">
+                        <a th:href="@{/board/boardList(page=${boardList.totalPages-1}, subject=${param.subject}, search=${param.search})}" class="span1">마지막</a>
+                    </span>
+                    </li>
+                </th:block>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+</body>
+</html>

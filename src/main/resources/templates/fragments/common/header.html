@@ -10,13 +10,14 @@
             <ul>
                 <li><a th:href="@{/}">HOME</a></li>
                 <li><a th:href="@{/board/boardList}">게시판</a></li>
-                <li><a th:href="@{/board/write}">글작성</a></li>
+
                 <li><a th:href="@{/shop}">쇼핑몰</a></li>
                 <th:block sec:authorize="isAnonymous()"> <!--비로그인 일때-->
                 <li><a th:href="@{/member/join}">회원가입</a></li>
                 <li><a th:href="@{/member/login}">로그인</a></li>
                 </th:block>
                 <th:block sec:authorize="isAuthenticated()"> <!--로그인 상태 일때-->
+                    <li><a th:href="@{/board/write}">글작성</a></li>
                     <th:block th:if="${#authentication.principal.memberEntity.role.toString()!='ADMIN'}">
                 <li ><a th:href="@{/member/detail/{id}(id=${#authentication.principal.memberEntity.id})}"
                        th:text="${#authentication.principal.memberEntity.userName}"

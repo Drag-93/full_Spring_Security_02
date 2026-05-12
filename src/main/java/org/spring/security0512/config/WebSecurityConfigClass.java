@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration//설정(공유)
 @EnableWebSecurity // 시큐리티 <-사용자 로그인요청 처리
@@ -54,5 +55,20 @@ public class WebSecurityConfigClass {
         return http.build();
     }
 
+    //시큐리티 로그인 성공시
+    @Bean // 빈으로 등록 ** 빈은 프로젝트 하나만 등록
+    public CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler(){
+        return new CustomAuthenticationSuccessHandler();
+    }
+    //시큐리티 로그인 실패시
+    @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler(){
+        return new CustomAuthenticationFailureHandler();
+    }
+    //시큐리티 로그아웃 성공시
+//    @Bean
+//    public LogoutSuccessHandler customLogOutSuccessHandler(){
+//        return new CustomLogOutSuccessHandeler();
+//    }
 }
 

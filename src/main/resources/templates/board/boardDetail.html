@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" th:href="@{/css/board/boardDetail.css}">
+    <script th:src="@{/js/reply.js}" defer></script>
+    <style>
+        .error {
+            font-size: 12px;
+            font-weight: bold;
+            color: #ff0000;
+        }
+
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+<div class="container">
+    <div class="detail">
+        <div class="detail-con">
+            <h1>게시글상세보기</h1>
+            <form th:action="@{/board/update}" method="post" enctype="multipart/form-data">
+                <div class="top">
+                    <div class="left">
+                        <div class="left-con">
+                            <th:block th:if="${board.attachFile==1}"> <!--  이미지 표시 -->
+                                <img th:src="@{|/upload/${board.newFileName}|}" alt="이미지대체문구">
+                            </th:block>
+                            <th:block th:unless="${board.attachFile==1}">  <!--  이미지 표시 -->
+                                <img src="https://placehold.co/400x500?text=NOIMAGE" alt="이미지대체문구">
+                            </th:block>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <label for="id">id</label>
+                            <input type="text" name="id" id="id" th:value="${board.id}" readonly>
+                        </li>
+                        <li>
+                            <label for="title">title</label>
+                            <input type="text" name="title" id="title" th:value="${board.title}">
+                        </li>
+                        <li>
+                            <label for="content">content</label>
+                            <input type="text" name="content" id="content" th:value="${board.content}">
+                        </li>
+                        <li>
+                            <label for="boardPw">boardPw</label>
+                            <input type="text" name="boardPw" id="boardPw" th:value="${board.boardPw}">
+                        </li>
+                        <li>
+                            <label for="nickName">nickName</label>
+                            <input type="text" name="nickName" id="nickName" th:value="${board.nickName}">
+                        </li>
+                        <li>
+                            <label for="hit">조회수</label>
+                            <input type="text" name="hit" id="hit" th:value="${board.hit}" readonly>
+                        </li>
+                        <li>
+                            <label for="memberId">memberId</label>
+                            <!--                            <input type="text" name="memberId" id="memberId" th:value="${board.memberId}" readonly>-->
+                            <input type="text" id="memberId"  name="memberId"  th:value="${board.memberEntity.id}" readonly>
+                        <li>
+                            <span>작성시간</span>
+                            <span id="createTime"
+                                  th:text="${#temporals.format(board.createTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </li>
+                        <li>
+                            <span>수정시간</span>
+                            <span id="updateTime"
+                                  th:text="${#temporals.format(board.updateTime, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </li>
+                        <li>
+                            <label for="boardFile">FILE</label>
+                            <input type="file" name="boardFile" id="boardFile">
+                        </li>
+                        <li>
+                            <a th:href="@{/board/boardList}" class="li-last">목록</a>
+                            <th:block th:if="${#authorization.expression('isAuthenticated()')
+                                               && (#authentication.principal.memberEntity.role.toString() == 'ADMIN'
+                                               || #authentication.principal.memberEntity.id == board.memberId)}">
+                            <input type="submit" class="li-last" value="수정">
+                            <a th:href="@{/board/delete/{id}(id=${board.id})}" class="li-last">삭제</a>
+                            </th:block>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+
+            <div class="bottom">
+                <hr>
+                <h3>댓글</h3>
+                <!-- 댓글 작성 -->
+                <div class="reply-write">
+                    <ul>
+                        <li>
+                            <!-- 게시글 ID -->
+                            <input type="text" id="boardId2" name="boardId" th:value="${board.id}" readonly>
+                            <!-- 회원 ID, 로그인후 , 테스트 직접 작성 -->
+                            <input type="text" id="memberId2" name="memberId" th:value="${board.memberId}">
+                            <!-- 작성자 -->
+                            <input type="text" id="replyWriter" name="replyWriter" value="" placeholder="작성자">
+
+                        </li>
+                        <li class="replyWrite">
+                            <input type="text" id="replyContent" placeholder="댓글을 입력하세요">
+                            <button type="button" onclick="saveReply()">작성</button>
+                        </li>
+                    </ul>
+                </div>
+                <!-- 댓글 목록 -->
+                <div id="replyList" class="reply-list"></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+</body>
+</html>
