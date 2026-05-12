@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>join</title>
+    <link rel="stylesheet" th:href="@{/css/member/join.css}">
+</head>
+<div th:replace="~{/fragments/common/header :: headerFragment}"></div>
+<div class="join">
+    <div class="join-con">
+        <h1>회원가입페이지</h1>
+        <form th:action="@{/member/join}" method="POST" th:object="${memberDto}">
+            <ul>
+                <li>
+                    <label for="userEmail">이메일</label>
+                    <input type="email" th:field="*{userEmail}" id="userEmail">
+                </li>
+                <p th:if="${#fields.hasErrors('userEmail')}" th:errors="*{userEmail}" class="error"></p>
+                <li>
+                    <label for="userPw">비밀번호</label>
+                    <input type="password" th:field="*{userPw}" id="userPw">
+                </li>
+                <p th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}" class="error"></p>
+                <li>
+                    <label for="userName">이름</label>
+                    <input type="text" th:field="*{userName}" id="userName">
+                </li>
+                <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}" class="error"></p>
+                <li>
+                    <input type="submit" class="li-last" value="회원가입">
+                    <a th:href="@{/member/login}" class="li-last">로그인</a>
+                    <input type="reset" value="초기화"  class="li-last">
+                </li>
+            </ul>
+
+        </form>
+    </div>
+</div>
+</body>
+</html>

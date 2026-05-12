@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+    <link rel="stylesheet" th:href="@{/css/member/update.css}">
+</head>
+<body>
+<div th:replace="~{/fragments/common/header :: headerFragment}"></div>
+<div class="memberUpdate">
+    <div class="memberUpdate-con">
+        <h1>회원수정페이지</h1>
+        <form th:action="@{/member/update}" method="POST">
+            <ul>
+                <li>
+                    <label for="id">아이디</label>
+                    <input type="text" name="id" id="id" readonly th:value="${member.id}">
+                </li>
+                <li>
+                    <label for="userEmail">이메일</label>
+                    <input type="email" name="userEmail" id="userEmail" th:value="${member.userEmail}">
+                </li>
+                <li th:text="${member.userPw}"></li>
+                <li>
+                    <label for="userPw">비빌번호</label>
+                    <input type="password" name="userPw" id="userPw" placeholder="비밀번호 변경시에만 입력">
+                </li>
+                <li>
+                    <label for="userName">이름</label>
+                    <input type="text" name="userName" id="userName" th:value="${member.userName}">
+                </li>
+                <li>
+                    <label for="role">ROLE</label>
+                    <input type="text" name="role" id="role" readonly th:value="${member.role}">
+                </li>
+                <li th:if="${member.createTime != null}">
+                    <span>가입일</span>
+                    <span th:text="${#temporals.format(member.createTime, 'yyyy-MM-dd HH:mm')}">2026-04-23</span>
+                </li>
+                <li th:if="${member.updateTime != null}">
+                    <span>수정일</span>
+                    <span th:text="${#temporals.format(member.updateTime, 'yyyy-MM-dd HH:mm')}">2026-04-23</span>
+                </li>
+                <li th:unless="${member.updateTime !=null }">
+                    <span class="label">수정일</span>
+                    <span class="content">X</span>
+                </li>
+                <li>
+                    <input type="submit" class="li-last" value="회원수정">
+                    <a th:href="@{/member/login}" class="li-last">로그인</a>
+                    <input type="reset" value="초기회" class="li-last">
+                </li>
+            </ul>
+
+        </form>
+
+    </div>
+</div>
+<div th:replace="~{/fragments/common/footer :: footerFragment}"></div>
+</body>
+</html>

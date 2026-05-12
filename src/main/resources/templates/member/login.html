@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <link rel="stylesheet" th:href="@{/css/member/login.css}">
+</head>
+<body>
+<div th:replace="~{fragments/common/header::headerFragment}"></div>
+<div class="login">
+    <div class="login-con">
+        <h1>로그인페이지</h1>
+        <form th:action="@{/member/login}" method="post">
+            <ul>
+                <li>
+                    <label for="userEmail">이메일</label>
+                    <input type="email" name="userEmail" id="userEmail">
+                </li>
+                <li>
+                    <label for="userPw">비밀번호</label>
+                    <input type="password" name="userPw" id="userPw">
+                </li>
+                <li>
+                    <input type="submit" class="li-last" value="로그인">
+                    <a th:href="@{/member/join}">회원가입</a>
+                    <input type="reset" class="li-last" value="초기화">
+                </li>
+            </ul>
+        </form>
+        <th:block th:if="error">
+            <p style="color:#ff0000; font-size: 12px;" th:text="${exception}"></p>
+            <div class="sns">
+                <a th:href="@{#}"><img th:src="@{/images/google.png}" alt="google"></a>
+                <a th:href="@{#}"><img th:src="@{/images/kakao.png}" alt="kakao"></a>
+                <a th:href="@{#}"><img th:src="@{/images/naver.png}" alt="naver"></a>
+            </div>
+        </th:block>
+    </div>
+</div>
+
+</body>
+</html>

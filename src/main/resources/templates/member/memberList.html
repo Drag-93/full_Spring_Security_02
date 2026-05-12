@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원목록</title>
+    <link rel="stylesheet" th:href="@{/css/member/memberList.css}">
+</head>
+<body>
+
+<!-- header -->
+<div th:replace="~{fragments/common/header :: headerFragment}"></div>
+
+<div class="memberList">
+    <div class="memberList-con">
+
+        <!-- 상단 영역: 제목 및 검색 -->
+        <div class="top">
+            <h1 class="title">회원목록페이지</h1>
+
+            <!-- 검색 폼 -->
+            <div class="search">
+                <form th:action="@{/member/memberList}" method="get">
+                    <select name="subject">
+                        <option value="">::선택::</option>
+                        <option value="userEmail" th:selected="${param.subject != null and param.subject[0] == 'userEmail'}">이메일</option>
+                        <option value="userName" th:selected="${param.subject != null and param.subject[0] == 'userName'}">이름</option>
+                    </select>
+                    <input type="text" name="search" th:value="${param.search}" placeholder="검색어를 입력하세요">
+                    <input type="submit" value="검색">
+                </form>
+            </div>
+
+            <!-- 리스트 헤더 -->
+            <ul class="member-list-header">
+                <li>번호</li>
+                <li>회원번호</li>
+                <li>이메일</li>
+                <li>비밀번호</li>
+                <li>이름</li>
+                <li>가입일</li>
+                <li>수정일</li>
+                <li>보기</li>
+            </ul>
+
+            <!-- 리스트 데이터 -->
+            <ul class="member-list-data">
+                <li th:each="member, loop : ${memberList.content}">
+                    <!-- 가상 번호 계산 -->
+                    <div class="m-no" th:text="${memberList.totalElements - (newPage * memberList.size) - loop.index}">1</div>
+                    <!-- DB ID -->
+                    <div class="m-no" th:text="${member.id}">1</div>
+                    <div class="m-email" th:text="${member.userEmail}">test@test.com</div>
+                    <div class="m-email" th:text="${member.userPw}">****</div>
+                    <div class="m-name" th:text="${member.userName}">홍길동</div>
+                    <div class="m-date" th:text="${#temporals.format(member.createTime,'yyyy-MM-dd HH:mm')}">2026-01-01</div>
+
+                    <!-- 수정일 처리 -->
+                    <div class="m-date" th:if="${member.updateTime != null}" th:text="${#temporals.format(member.updateTime,'yyyy-MM-dd HH:mm')}">2026-01-01</div>
+                    <div class="m-date" th:unless="${member.updateTime != null}">수정내역 없음</div>
+
+                    <!-- 상세보기 버튼 -->
+                    <div class="m-btn">
+                        <a th:href="@{/member/detail/{id}(id=${member.id})}" class="btn-detail">상세보기</a>
+                    </div>
+                </li>
+
+                <!-- 데이터 없음 표시 -->
+                <li th:if="${memberList.totalElements == 0}" class="no-data">
+                    가입된 회원이 없습니다.
+                </li>
+            </ul>
+        </div>
+
+        <!-- 페이징 처리 -->
+        <div class="paging" th:if="${memberList.totalElements > 0}">
+            <ul>
+                <!-- 처음으로 -->
+                <li>
+                    <span th:if="${newPage == 0}" class="span0">START</span>
+                    <a th:unless="${newPage == 0}" th:href="@{/member/memberList(page=0, subject=${param.subject}, search=${param.search})}">START</a>
+                </li>
+
+                <!-- 이전으로 -->
+                <li>
+                    <span th:if="${newPage == 0}" class="span0">PRE</span>
+                    <a th:unless="${newPage == 0}" th:href="@{/member/memberList(page=${newPage-1}, subject=${param.subject}, search=${param.search})}">PRE</a>
+                </li>
+
+                <!-- 페이지 번호 루프 -->
+                <li th:each="i : ${#numbers.sequence(startPage, endPage)}">
+                    <span th:if="${i == newPage + 1}" th:text="${i}" class="now"></span>
+                    <a th:unless="${i == newPage + 1}"
+                       th:href="@{/member/memberList(page=${i-1}, subject=${param.subject}, search=${param.search})}"
+                       th:text="${i}"></a>
+                </li>
+
+                <!-- 다음으로 -->
+                <li>
+                    <span th:if="${newPage + 1 == memberList.totalPages}" class="span0">NEXT</span>
+                    <a th:unless="${newPage + 1 == memberList.totalPages}" th:href="@{/member/memberList(page=${newPage+1}, subject=${param.subject}, search=${param.search})}">NEXT</a>
+                </li>
+
+                <!-- 마지막으로 -->
+                <li>
+                    <span th:if="${newPage + 1 == memberList.totalPages}" class="span0">END</span>
+                    <a th:unless="${newPage + 1 == memberList.totalPages}" th:href="@{/member/memberList(page=${memberList.totalPages-1}, subject=${param.subject}, search=${param.search})}">END</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- footer -->
+<div th:replace="~{fragments/common/footer :: footerFragment}"></div>
+
+</body>
+</html>

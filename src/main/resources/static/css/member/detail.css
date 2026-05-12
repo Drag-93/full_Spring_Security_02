@@ -1,0 +1,185 @@
+@import url(/css/common/header.css);
+@import url(/css/common/footer.css);
+
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+ul,li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+body{
+    background:
+            linear-gradient(135deg,#0f1115,#1b1f27);
+
+    color: #fff;
+
+    font-family: Arial, sans-serif;
+
+    min-height: 100vh;
+}
+
+/* detail */
+
+.detail{
+    width: 100%;
+
+    padding: 80px 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-con{
+    width: 100%;
+    max-width: 700px;
+
+    padding: 50px 40px;
+
+    border-radius: 24px;
+
+    background:
+            rgba(255,255,255,0.04);
+
+    border:
+            1px solid rgba(255,255,255,0.06);
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+            0 10px 40px rgba(0,0,0,0.45);
+}
+
+.detail-con h1{
+    text-align: center;
+
+    margin-bottom: 45px;
+
+    font-size: 34px;
+    font-weight: 700;
+
+    color: #f3f4f6;
+}
+
+/* info */
+
+.info-list{
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+.info-list li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 18px 20px;
+
+    border-radius: 14px;
+
+    background:
+            rgba(255,255,255,0.03);
+
+    border:
+            1px solid rgba(255,255,255,0.05);
+}
+
+.label{
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #9ca3af;
+}
+
+.content{
+    font-size: 15px;
+
+    color: #f9fafb;
+}
+
+.password{
+    letter-spacing: 3px;
+}
+
+/* buttons */
+
+.btn-group{
+    margin-top: 40px;
+
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    flex-wrap: wrap;
+}
+
+.btn-group a{
+    display: inline-block;
+
+    padding: 14px 24px;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.25s;
+}
+
+/* each button */
+
+.btn-list{
+    background: #374151;
+    color: #fff;
+}
+
+.btn-edit{
+    background: #2563eb;
+    color: #fff;
+}
+
+.btn-delete{
+    background: #dc2626;
+    color: #fff;
+}
+
+/* hover */
+
+.btn-group a:hover{
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+/* responsive */
+
+@media (max-width:700px){
+
+    .detail-con{
+        padding: 40px 24px;
+    }
+
+    .detail-con h1{
+        font-size: 28px;
+    }
+
+    .info-list li{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+}

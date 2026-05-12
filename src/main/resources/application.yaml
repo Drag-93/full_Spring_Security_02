@@ -1,0 +1,30 @@
+server:
+  port: 8090
+
+spring:
+  # mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/security05
+    username: root
+    password: 1234
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: update #create #update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  # 기본설정
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
+
+#로그 설정
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
