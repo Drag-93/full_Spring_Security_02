@@ -20,7 +20,7 @@
                     <li><a th:href="@{/board/write}">글작성</a></li>
                     <th:block th:if="${#authentication.principal.memberEntity.role.toString()!='ADMIN'}">
                 <li ><a th:href="@{/member/detail/{id}(id=${#authentication.principal.memberEntity.id})}"
-                       th:text="${#authentication.principal.memberEntity.userName}"
+                       th:text="${#authentication.principal.memberEntity.userName+'님'}"
                         >내정보</a></li> </th:block>
                     <th:block th:unless="${#authentication.principal.memberEntity.role.toString()!='ADMIN'}">
                 <li><a th:href="@{/member/memberList}">회원목록</a></li>

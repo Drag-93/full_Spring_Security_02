@@ -110,5 +110,6 @@ public class MemberController {
         //회원가입 실행
         memberService.memberUpdate(memberDto);
         return "redirect:/member/detail/"+memberDto.getId();
-    }
+   }
+
 }

@@ -31,8 +31,8 @@
             <p style="color:#ff0000; font-size: 12px;" th:text="${exception}"></p>
             <div class="sns">
                 <a th:href="@{/oauth2/authorization/google}"><img th:src="@{/images/google.png}" alt="google"></a>
-                <a th:href="@{#}"><img th:src="@{/images/kakao.png}" alt="kakao"></a>
-                <a th:href="@{#}"><img th:src="@{/images/naver.png}" alt="naver"></a>
+                <a th:href="@{/oauth2/authorization/kakao}"><img th:src="@{/images/kakao.png}" alt="kakao"></a>
+                <a th:href="@{/oauth2/authorization/naver}"><img th:src="@{/images/naver.png}" alt="naver"></a>
             </div>
         </th:block>
     </div>

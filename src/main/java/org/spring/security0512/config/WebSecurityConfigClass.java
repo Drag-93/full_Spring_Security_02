@@ -6,6 +6,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -46,14 +49,29 @@ public class WebSecurityConfigClass {
                                 .failureUrl("/member/login?error=true") //로그인 실패시 -> 다시 로그인 페이지로
                                 .permitAll()
         );
+        //oAuth2방식 로그인
+        http.oauth2Login(oauth2->oauth2
+                .loginPage("/member/login")
+                .userInfoEndpoint(userInfo->
+                        userInfo.userService(myOAuth2UserService())));
         //4. 로그아웃
         http.logout(logout->
                 logout.logoutUrl("/member/logout") // 로그아웃 URL기본/ logout
-                        .logoutSuccessUrl("/")//로그아웃 성공후 URL
+//                        .logoutSuccessUrl("/")//로그아웃 성공후 URL
+                        .logoutSuccessHandler(customLogOutSuccessHandler())
                         .permitAll()
         );
         return http.build();
     }
+
+    //OAuth 처리 구현체
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User>myOAuth2UserService(){
+        // MyDefaultOAuth2UserService 구현체가 반드시 존재해야 한다.
+        return new MyDefaultOAuth2UserService();
+    }
+
+
 
     //시큐리티 로그인 성공시
     @Bean // 빈으로 등록 ** 빈은 프로젝트 하나만 등록
@@ -66,9 +84,9 @@ public class WebSecurityConfigClass {
         return new CustomAuthenticationFailureHandler();
     }
     //시큐리티 로그아웃 성공시
-//    @Bean
-//    public LogoutSuccessHandler customLogOutSuccessHandler(){
-//        return new CustomLogOutSuccessHandeler();
-//    }
+    @Bean
+    public CustomLogOutSuccessHandler customLogOutSuccessHandler(){
+        return new CustomLogOutSuccessHandler();
+    }
 }
 

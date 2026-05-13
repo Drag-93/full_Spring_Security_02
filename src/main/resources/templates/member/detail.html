@@ -15,10 +15,10 @@
                 <span class="label">이메일</span>
                 <span class="content" th:text="${member.userEmail}"></span>
             </li>
-            <li>
-                <span class="label">비빌번호</span>
-                <span class="content" th:type="password" th:text="${member.userPw}"></span>
-            </li>
+<!--            <li>-->
+<!--                <span class="label">비빌번호</span>-->
+<!--                <span class="content" th:type="password" th:text="${member.userPw}"></span>-->
+<!--            </li>-->
             <li>
                 <span class="label">이름</span>
                 <span class="content" th:text="${member.userName}"></span>
@@ -34,10 +34,10 @@
         </ul>
         <div class="btn-group">
             <a th:href="@{/member/memberList}" class="btn-list">목록으로</a>
+            <th:block th:if="${#authentication.principal.memberEntity.role.toString() == 'ADMIN'||#authentication.getName()==member.userEmail}">
             <a th:href="@{/member/update/{id}(id=${member.id})}" class="btn-edit">수정하기</a>
-            <div th:if="${member.role.toString() == 'ADMIN'}">
-                <a th:href="@{/member/delete/{id}(id=${member.id})}" class="btn-delete">삭제하기</a>
-            </div>
+            <a th:href="@{/member/delete/{id}(id=${member.id})}" class="btn-delete">삭제하기</a>
+            </th:block>
         </div>
     </div>
 </div>
